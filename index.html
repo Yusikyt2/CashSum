@@ -9,13 +9,13 @@
     <style>
         :root {
             --bg-dark: #05070a;
-            --card-glass: rgba(15, 23, 42, 0.6);
-            --border-glass: rgba(255, 255, 255, 0.08);
+            --card-glass: rgba(15, 23, 42, 0.45);
+            --border-glass: rgba(255, 255, 255, 0.06);
         }
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #1a1f35 0%, #05070a 100%);
+            background: radial-gradient(circle at 50% 0%, #161a2e 0%, #030508 100%);
             color: #f8fafc;
             min-height: 100vh;
         }
@@ -23,44 +23,61 @@
         /* Эффект стекла */
         .glass {
             background: var(--card-glass);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border-glass);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
         /* Неоновые акценты редкостей */
-        .rarity-glow-common { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3)); }
-        .rarity-glow-rare { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4)); }
-        .rarity-glow-classified { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.5)); }
-        .rarity-glow-covert { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.6)); }
-        .rarity-glow-special { filter: drop-shadow(0 0 20px rgba(234, 179, 8, 0.7)); }
+        .rarity-glow-common { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.25)); }
+        .rarity-glow-rare { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.35)); }
+        .rarity-glow-classified { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.45)); }
+        .rarity-glow-covert { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.55)); }
+        .rarity-glow-special { filter: drop-shadow(0 0 20px rgba(234, 179, 8, 0.65)); }
 
-        .item-card-inner {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
-        }
+        /* Граница по редкости */
+        .border-common { border-color: rgba(59, 130, 246, 0.4); }
+        .border-rare { border-color: rgba(139, 92, 246, 0.4); }
+        .border-classified { border-color: rgba(236, 72, 153, 0.4); }
+        .border-covert { border-color: rgba(239, 68, 68, 0.4); }
+        .border-special { border-color: rgba(234, 179, 8, 0.4); }
+
+        /* Цвет текста редкости */
+        .text-common { color: #60a5fa; }
+        .text-rare { color: #c084fc; }
+        .text-classified { color: #f472b6; }
+        .text-covert { color: #f87171; }
+        .text-special { color: #facc15; }
 
         /* Карусель */
         .carousel-track {
             display: flex;
-            transition: transform 6s cubic-bezier(0.15, 0, 0.05, 1);
+            transition: transform 6s cubic-bezier(0.15, 0.85, 0.1, 1);
             will-change: transform;
         }
 
         .visor-glow {
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.4);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.5);
         }
 
         @keyframes pulse-gold {
-            0% { box-shadow: 0 0 5px rgba(234, 179, 8, 0.4); }
-            50% { box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
-            100% { box-shadow: 0 0 5px rgba(234, 179, 8, 0.4); }
+            0% { box-shadow: 0 0 5px rgba(234, 179, 8, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(234, 179, 8, 0.2); }
         }
-        .animate-gold { animation: pulse-gold 2s infinite; }
+        .animate-gold { animation: pulse-gold 2.5s infinite; }
+
+        /* Кастомный скроллбар */
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
     </style>
 </head>
 <body class="flex flex-col">
 
-    <header class="z-50 px-6 py-5 border-b border-white/5 bg-black/20 backdrop-blur-md sticky top-0">
+    <!-- Хедер -->
+    <header class="z-50 px-6 py-5 border-b border-white/5 bg-black/30 backdrop-blur-md sticky top-0">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 glass rounded-2xl flex items-center justify-center border-amber-500/20">
@@ -72,7 +89,7 @@
                     <h1 class="text-2xl font-extrabold tracking-tighter text-white">CASE<span class="text-amber-500">CRAFT</span></h1>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Симулятор нового поколения</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Premium Github-Linked Edition</span>
                     </div>
                 </div>
             </div>
@@ -80,7 +97,7 @@
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex flex-col items-end mr-4">
                     <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Ваш статус</span>
-                    <span class="text-xs font-bold text-amber-400">PREMIUM ACCOUNT</span>
+                    <span class="text-xs font-bold text-amber-400">DEVELOPER MODE</span>
                 </div>
                 <div class="glass px-5 py-2.5 rounded-2xl flex items-center gap-4 border-emerald-500/10">
                     <div class="text-right">
@@ -95,17 +112,19 @@
         </div>
     </header>
 
+    <!-- Основной макет -->
     <main class="max-w-7xl mx-auto px-4 py-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10">
         
+        <!-- Левая зона: Кейсы, Рулетка, Список предметов -->
         <div class="lg:col-span-8 space-y-10">
             
             <!-- Выбор кейса -->
             <section>
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Доступные коллекции</h2>
+                    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-slate-400">Доступные коллекции</h2>
                     <div class="h-px flex-grow mx-6 bg-white/5"></div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6" id="case-selector-container"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4" id="case-selector-container"></div>
             </section>
 
             <!-- Рулетка -->
@@ -120,17 +139,19 @@
                     <div class="flex gap-4">
                         <div class="flex items-center gap-2 glass px-3 py-2 rounded-xl border-white/5">
                             <input type="checkbox" id="fast-open" class="w-4 h-4 rounded accent-amber-500">
-                            <label for="fast-open" class="text-[10px] font-bold text-slate-400 uppercase cursor-pointer">Fast</label>
+                            <label for="fast-open" class="text-[10px] font-bold text-slate-400 uppercase cursor-pointer select-none">Быстро</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Конвейер -->
                 <div class="relative w-full bg-black/40 rounded-[32px] p-1 border border-white/5 overflow-hidden my-8">
+                    <!-- Линия-визир по центру -->
                     <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 z-30 bg-amber-500 visor-glow"></div>
                     <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-1 z-30 w-4 h-4 bg-amber-500 rotate-45"></div>
                     <div class="absolute bottom-0 left-1/2 -translate-x-1/2 -mb-1 z-30 w-4 h-4 bg-amber-500 rotate-45"></div>
 
+                    <!-- Окно просмотра -->
                     <div id="carousel-viewport" class="w-full overflow-hidden py-6">
                         <div id="carousel-track" class="carousel-track gap-3 px-[50%]">
                             <div class="w-full flex items-center justify-center py-16 text-slate-600 font-medium tracking-wide">
@@ -148,20 +169,22 @@
                 </div>
             </section>
 
-            <!-- Содержимое -->
+            <!-- Содержимое коллекции -->
             <section>
-                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6">Предметы в коллекции</h3>
-                <div id="case-items-list" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4"></div>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Предметы в коллекции</h3>
+                <div id="case-items-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
             </section>
         </div>
 
+        <!-- Правая колонка: Выигрыш, Статистика и Инвентарь -->
         <div class="lg:col-span-4 space-y-8">
             
-            <!-- Выигрыш -->
+            <!-- Окно выигрыша -->
             <div id="win-card" class="glass rounded-[32px] p-8 hidden relative border-amber-500/30 overflow-hidden animate-gold">
                 <div class="relative z-10 flex flex-col items-center text-center">
-                    <div class="w-20 h-20 mb-6 flex items-center justify-center" id="win-item-glow">
-                        <div id="win-item-icon" class="w-full h-full text-white"></div>
+                    <div class="w-32 h-32 mb-6 flex items-center justify-center" id="win-item-glow-container">
+                        <!-- Сюда вставляется изображение оружия -->
+                        <div id="win-item-icon-wrapper" class="w-full h-full flex items-center justify-center"></div>
                     </div>
                     <h4 id="win-item-name" class="font-black text-xl mb-1">...</h4>
                     <p id="win-item-rarity" class="text-[10px] font-black uppercase tracking-widest mb-4">...</p>
@@ -214,42 +237,105 @@
     <div id="toast-container" class="fixed bottom-10 right-10 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-        // ... (Все данные SKINS, CASES, SVG_ICONS остаются из предыдущей версии, но дополняются логикой UI) ...
+        // Конфигурационный URL вашей папки Skins на GitHub
+        const GITHUB_SKINS_URL = "https://raw.githubusercontent.com/Yusikyt2/CashSum/main/Skins/";
+
+        // Иконки SVG на случай, если картинки ещё не загружены в GitHub
         const SVG_ICONS = {
-            rifle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 11h14l3-3H4v3zm0 0v4m0-4h-2m2 4h4m10-4v4m2-4v2m-6-2v2" /></svg>`,
-            sniper: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13h15l3-2V9H3v4zm3-4V7m4 2V7m4 2V7m-1 6v3m-5-3v3m10-3h1" /></svg>`,
-            knife: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M9 5l10 10m-8-7l5 5M4 20l2-2" /></svg>`,
-            pistol: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 8h10v4h-4v6h-4v-4H8V8z" /></svg>`,
-            gloves: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4a3 3 0 00-3 3v7a3 3 0 006 0V7a3 3 0 00-3-3zM8 9h8m-8 3h8" /></svg>`
+            rifle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M4 11h14l3-3H4v3zm0 0v4m0-4h-2m2 4h4m10-4v4m2-4v2m-6-2v2" /></svg>`,
+            sniper: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M3 13h15l3-2V9H3v4zm3-4V7m4 2V7m4 2V7m-1 6v3m-5-3v3m10-3h1" /></svg>`,
+            knife: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M18 6L6 18M9 5l10 10m-8-7l5 5M4 20l2-2" /></svg>`,
+            pistol: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M8 8h10v4h-4v6h-4v-4H8V8z" /></svg>`,
+            gloves: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M12 4a3 3 0 00-3 3v7a3 3 0 006 0V7a3 3 0 00-3-3zM8 9h8m-8 3h8" /></svg>`
         };
 
         const RARITY_MAP = {
-            'common': { name: 'Армейское', class: 'blue-500', soundFreq: 150 },
-            'rare': { name: 'Запрещенное', class: 'purple-500', soundFreq: 250 },
-            'classified': { name: 'Засекреченное', class: 'pink-500', soundFreq: 380 },
-            'covert': { name: 'Тайное', class: 'red-500', soundFreq: 520 },
-            'special': { name: 'Extra Rare', class: 'amber-500', soundFreq: 750 }
+            'common': { name: 'Армейское', class: 'common', soundFreq: 150 },
+            'rare': { name: 'Запрещенное', class: 'rare', soundFreq: 250 },
+            'classified': { name: 'Засекреченное', class: 'classified', soundFreq: 380 },
+            'covert': { name: 'Тайное', class: 'covert', soundFreq: 520 },
+            'special': { name: 'Extra Rare', class: 'special', soundFreq: 750 }
         };
 
+        // База скинов (с именами файлов, которые вы загрузите в Skins/)
         const SKINS = {
-            p250_sand: { name: 'P250 | Sand Dunes', rarity: 'common', price: 15, icon: 'pistol' },
-            ak_elite: { name: 'AK-47 | Elite Build', rarity: 'rare', price: 350, icon: 'rifle' },
-            m4a1_hyper: { name: 'M4A1-S | Hyper Beast', rarity: 'classified', price: 2100, icon: 'rifle' },
-            ak_vulcan: { name: 'AK-47 | Vulcan', rarity: 'covert', price: 15000, icon: 'rifle' },
-            knife_karambit: { name: '★ Karambit | Fade', rarity: 'special', price: 120000, icon: 'knife' },
-            awp_asiimov: { name: 'AWP | Asiimov', rarity: 'covert', price: 12000, icon: 'sniper' },
-            glock_bor: { name: 'Glock-18 | High Beam', rarity: 'common', price: 35, icon: 'pistol' },
-            usp_neo: { name: 'USP-S | Neo-Noir', rarity: 'classified', price: 1650, icon: 'pistol' }
+            // Классические базовые скины
+            p250_sand: { name: 'P250 | Sand Dunes', rarity: 'common', price: 15, icon: 'pistol', file: 'P250 Sand Dunes.png' },
+            glock_bor: { name: 'Glock-18 | High Beam', rarity: 'common', price: 35, icon: 'pistol', file: 'Glock-18 High Beam.png' },
+            nova_sand: { name: 'Nova | Sand Dunes', rarity: 'common', price: 12, icon: 'rifle', file: 'Nova Sand Dunes.png' },
+            
+            // Запрещенное
+            ak_elite: { name: 'AK-47 | Elite Build', rarity: 'rare', price: 350, icon: 'rifle', file: 'AK-47 Elite Build.png' },
+            famas_mecha: { name: 'FAMAS | Mecha Industries', rarity: 'rare', price: 280, icon: 'rifle', file: 'FAMAS Mecha Industries.png' },
+            
+            // Засекреченное
+            m4a1_hyper: { name: 'M4A1-S | Hyper Beast', rarity: 'classified', price: 2100, icon: 'rifle', file: 'M4A1-S Hyper Beast.png' },
+            usp_neo: { name: 'USP-S | Neo-Noir', rarity: 'classified', price: 1650, icon: 'pistol', file: 'USP-S Neo-Noir.png' },
+            
+            // Тайное
+            ak_vulcan: { name: 'AK-47 | Vulcan', rarity: 'covert', price: 25000, icon: 'rifle', file: 'AK-47 Vulcan.png' },
+            awp_asiimov: { name: 'AWP | Asiimov', rarity: 'covert', price: 19000, icon: 'sniper', file: 'AWP Asiimov.png' },
+            m4a4_asiimov: { name: 'M4A4 | Asiimov', rarity: 'covert', price: 15500, icon: 'rifle', file: 'M4A4 Asiimov.png' },
+            p250_asiimov: { name: 'P250 | Asiimov', rarity: 'classified', price: 1200, icon: 'pistol', file: 'P250 Asiimov.png' },
+
+            // Коллекция PRINTSTREAM
+            awp_printstream: { name: 'AWP | Printstream', rarity: 'covert', price: 18500, icon: 'sniper', file: 'AWP Printstream.png' },
+            deagle_printstream: { name: 'Desert Eagle | Printstream', rarity: 'classified', price: 6200, icon: 'pistol', file: 'Desert Eagle Printstream.png' },
+            m4a1_printstream: { name: 'M4A1-S | Printstream', rarity: 'covert', price: 14000, icon: 'rifle', file: 'M4A1-S Printstream.png' },
+            ak_printstream: { name: 'AK-47 | Printstream', rarity: 'covert', price: 16500, icon: 'rifle', file: 'AK-47 Printstream.png' },
+
+            // Экстра редкое (Ножи)
+            knife_karambit: { name: '★ Karambit | Fade', rarity: 'special', price: 145000, icon: 'knife', file: 'Karambit Fade.png' },
+            knife_butterfly: { name: '★ Butterfly | Doppler', rarity: 'special', price: 185000, icon: 'knife', file: 'Butterfly Doppler.png' },
+            gloves_vice: { name: '★ Gloves | Vice', rarity: 'special', price: 210000, icon: 'gloves', file: 'Gloves Vice.png' }
         };
 
+        // 5 уникальных кейсов под разные типы игры
         const CASES = [
-            { id: 'classic', name: 'Starter Box', price: 100, color: 'from-blue-600', items: ['p250_sand', 'glock_bor', 'ak_elite'], probs: { 'common': 0.8, 'rare': 0.18, 'classified': 0.02, 'covert': 0, 'special': 0 } },
-            { id: 'elite', name: 'Elite Ops', price: 2500, color: 'from-purple-600', items: ['ak_elite', 'm4a1_hyper', 'usp_neo', 'ak_vulcan'], probs: { 'common': 0, 'rare': 0.6, 'classified': 0.3, 'covert': 0.1, 'special': 0 } },
-            { id: 'legend', name: 'Legendary', price: 45000, color: 'from-amber-600', items: ['ak_vulcan', 'awp_asiimov', 'knife_karambit'], probs: { 'common': 0, 'rare': 0, 'classified': 0, 'covert': 0.3, 'special': 0.7 } }
+            { 
+                id: 'classic', 
+                name: 'Starter Box', 
+                price: 150, 
+                color: 'from-blue-600', 
+                items: ['p250_sand', 'glock_bor', 'nova_sand', 'ak_elite', 'famas_mecha'], 
+                probs: { 'common': 0.75, 'rare': 0.22, 'classified': 0.03, 'covert': 0, 'special': 0 } 
+            },
+            { 
+                id: 'printstream_case', 
+                name: 'Printstream Spec', 
+                price: 2500, 
+                color: 'from-slate-400', 
+                items: ['deagle_printstream', 'm4a1_printstream', 'ak_printstream', 'awp_printstream'], 
+                probs: { 'common': 0, 'rare': 0, 'classified': 0.60, 'covert': 0.38, 'special': 0.02 } 
+            },
+            { 
+                id: 'asiimov_case', 
+                name: 'Asiimov Corp', 
+                price: 3500, 
+                color: 'from-orange-500', 
+                items: ['p250_asiimov', 'm4a4_asiimov', 'awp_asiimov'], 
+                probs: { 'common': 0, 'rare': 0, 'classified': 0.50, 'covert': 0.48, 'special': 0.02 } 
+            },
+            { 
+                id: 'elite', 
+                name: 'Elite Ops', 
+                price: 8000, 
+                color: 'from-pink-600', 
+                items: ['ak_elite', 'm4a1_hyper', 'usp_neo', 'ak_vulcan', 'awp_asiimov'], 
+                probs: { 'common': 0, 'rare': 0.40, 'classified': 0.35, 'covert': 0.22, 'special': 0.03 } 
+            },
+            { 
+                id: 'legend', 
+                name: 'Absolute Legend', 
+                price: 60000, 
+                color: 'from-amber-500', 
+                items: ['awp_printstream', 'awp_asiimov', 'knife_karambit', 'knife_butterfly', 'gloves_vice'], 
+                probs: { 'common': 0, 'rare': 0, 'classified': 0, 'covert': 0.30, 'special': 0.70 } 
+            }
         ];
 
         let state = {
-            balance: 15000,
+            balance: 25000,
             inventory: [],
             stats: { opened: 0, spent: 0, won: 0 },
             activeCaseId: 'classic',
@@ -259,25 +345,54 @@
 
         let audioCtx = null;
 
-        function playSound(f, d = 0.08) {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const o = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            o.frequency.setValueAtTime(f, audioCtx.currentTime);
-            g.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + d);
-            o.connect(g); g.connect(audioCtx.destination);
-            o.start(); o.stop(audioCtx.currentTime + d);
+        // Воспроизведение звуков с помощью Web Audio API
+        function playSound(freq, duration = 0.08, type = 'sine', volume = 0.05) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.warn('Аудио не поддерживается вашим браузером');
+            }
+        }
+
+        // Рендеринг HTML с картинкой из Github с авто-фоллбеком на векторные SVG
+        function getItemImageHTML(item, sizeClass = "w-14 h-14") {
+            const fallbackSVG = SVG_ICONS[item.icon] || SVG_ICONS.rifle;
+            if (item.file) {
+                const imageUrl = GITHUB_SKINS_URL + encodeURIComponent(item.file);
+                return `
+                    <div class="${sizeClass} relative flex items-center justify-center">
+                        <img src="${imageUrl}" alt="${item.name}" class="max-w-full max-h-full object-contain z-10 transition-transform duration-300" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="absolute inset-0 flex items-center justify-center text-slate-400" style="display: none;">
+                            ${fallbackSVG}
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `<div class="${sizeClass} text-white">${fallbackSVG}</div>`;
+            }
         }
 
         function renderCases() {
             const container = document.getElementById('case-selector-container');
             container.innerHTML = CASES.map(c => `
-                <button onclick="selectCase('${c.id}')" id="case-${c.id}" class="group relative glass rounded-[24px] p-6 text-left transition-all hover:scale-[1.02] border-white/5">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${c.color} to-transparent opacity-10 rounded-bl-[60px]"></div>
-                    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1">Коллекция</p>
-                    <h4 class="text-lg font-bold text-white mb-4">${c.name}</h4>
-                    <p class="text-emerald-400 font-black text-lg">${c.price.toLocaleString()} ₽</p>
+                <button onclick="selectCase('${c.id}')" id="case-${c.id}" class="group relative glass rounded-[20px] p-4 text-left transition-all hover:scale-[1.03] border-white/5 flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br ${c.color} to-transparent opacity-10 rounded-bl-[40px] group-hover:opacity-20 transition-all"></div>
+                    <div>
+                        <p class="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1">Коллекция</p>
+                        <h4 class="text-sm font-bold text-white mb-2 leading-tight group-hover:text-amber-500 transition-colors">${c.name}</h4>
+                    </div>
+                    <p class="text-emerald-400 font-black text-sm mt-2">${c.price.toLocaleString()} ₽</p>
                 </button>
             `).join('');
         }
@@ -288,7 +403,8 @@
             const c = CASES.find(x => x.id === id);
             
             document.querySelectorAll('[id^="case-"]').forEach(el => el.classList.remove('border-amber-500/50', 'bg-white/5'));
-            document.getElementById(`case-${id}`).classList.add('border-amber-500/50', 'bg-white/5');
+            const selectedBtn = document.getElementById(`case-${id}`);
+            if (selectedBtn) selectedBtn.classList.add('border-amber-500/50', 'bg-white/5');
 
             document.getElementById('active-case-name').innerText = c.name;
             document.getElementById('active-case-price').innerText = `${c.price.toLocaleString()} ₽`;
@@ -297,9 +413,11 @@
                 const item = SKINS[k];
                 const r = RARITY_MAP[item.rarity];
                 return `
-                    <div class="glass rounded-2xl p-4 flex flex-col items-center border-white/5">
-                        <div class="w-10 h-10 mb-3 text-${r.class} opacity-80">${SVG_ICONS[item.icon]}</div>
-                        <p class="text-[9px] font-bold text-center text-slate-300 truncate w-full">${item.name}</p>
+                    <div class="glass rounded-2xl p-4 flex flex-col items-center border-white/5 relative overflow-hidden group hover:border-white/15 transition-all">
+                        <div class="absolute top-0 inset-x-0 h-[2px] bg-${r.class}"></div>
+                        <div class="mb-3">${getItemImageHTML(item, "w-16 h-16")}</div>
+                        <p class="text-[9px] font-bold text-center text-slate-200 truncate w-full" title="${item.name}">${item.name}</p>
+                        <p class="text-[9px] text-emerald-400 font-extrabold mt-1">${item.price.toLocaleString()} ₽</p>
                     </div>
                 `;
             }).join('');
@@ -330,7 +448,7 @@
             document.getElementById('win-card').classList.add('hidden');
 
             const isFast = document.getElementById('fast-open').checked;
-            const totalItems = isFast ? 10 : 30;
+            const totalItems = isFast ? 10 : 32;
             const winIdx = totalItems - 4;
             const track = document.getElementById('carousel-track');
             track.innerHTML = '';
@@ -345,29 +463,31 @@
                 div.className = `flex-shrink-0 w-32 h-40 glass rounded-2xl border-b-4 border-${r.class} p-4 flex flex-col items-center justify-between rarity-glow-${roll.rarity}`;
                 div.innerHTML = `
                     <p class="text-[7px] font-black uppercase text-slate-500">${r.name}</p>
-                    <div class="w-14 h-14 text-white">${SVG_ICONS[roll.icon]}</div>
+                    <div class="w-16 h-16 flex items-center justify-center">${getItemImageHTML(roll, "w-16 h-16")}</div>
                     <p class="text-[8px] font-bold text-center text-white truncate w-full">${roll.name.split('|')[1] || roll.name}</p>
                 `;
                 track.appendChild(div);
             }
 
             state.lastWon = winningItem;
-            const step = 128 + 12; // width + gap
+            const step = 128 + 12; // ширина предмета + зазор в CSS
             const offset = (winIdx * step) + (128/2) - (document.getElementById('carousel-viewport').offsetWidth / 2);
             const randomInner = (Math.random() * 80) - 40;
 
             setTimeout(() => {
-                track.style.transition = isFast ? 'transform 1s cubic-bezier(0.1, 0.8, 0.1, 1)' : 'transform 6s cubic-bezier(0.1, 0, 0.05, 1)';
+                track.style.transition = isFast ? 'transform 1.2s cubic-bezier(0.15, 0.85, 0.1, 1)' : 'transform 6s cubic-bezier(0.15, 0.85, 0.1, 1)';
                 track.style.transform = `translateX(-${offset + randomInner}px)`;
                 
                 if(!isFast) {
                     for(let i=0; i<25; i++) {
-                        setTimeout(() => playSound(150, 0.03), Math.pow(i/24, 2) * 5500);
+                        setTimeout(() => playSound(140 + i * 5, 0.04, 'sine', 0.06), Math.pow(i/24, 2.2) * 5500);
                     }
+                } else {
+                    setTimeout(() => playSound(200, 0.1), 300);
                 }
             }, 50);
 
-            setTimeout(finishOpening, isFast ? 1100 : 6100);
+            setTimeout(finishOpening, isFast ? 1300 : 6100);
         }
 
         function rollItem(c) {
@@ -396,40 +516,48 @@
 
             const winCard = document.getElementById('win-card');
             winCard.classList.remove('hidden');
-            document.getElementById('win-item-glow').innerHTML = `<div class="w-full h-full text-${r.class} rarity-glow-${item.rarity}">${SVG_ICONS[item.icon]}</div>`;
+            
+            // Вставляем изображение с флбеком в окно победы
+            document.getElementById('win-item-icon-wrapper').innerHTML = getItemImageHTML(item, "w-28 h-28 rarity-glow-" + item.rarity);
+            
             document.getElementById('win-item-name').innerText = item.name;
             document.getElementById('win-item-rarity').innerText = r.name;
             document.getElementById('win-item-rarity').className = `text-[10px] font-black uppercase tracking-widest mb-4 text-${r.class}`;
             document.getElementById('win-item-price').innerText = `${item.price.toLocaleString()} ₽`;
             
-            playSound(r.soundFreq, 0.3);
+            playSound(r.soundFreq, 0.3, 'triangle', 0.1);
         }
 
         function sellLastWin() {
+            if(!state.lastWon) return;
             state.balance += state.lastWon.price;
             document.getElementById('win-card').classList.add('hidden');
-            showToast('Успех', 'Предмет продан');
+            showToast('ПРОДАНО', `Вы продали ${state.lastWon.name} за ${state.lastWon.price.toLocaleString()} ₽`);
+            state.lastWon = null;
             updateUI();
         }
 
         function keepLastWin() {
+            if(!state.lastWon) return;
             state.inventory.unshift(state.lastWon);
             document.getElementById('win-card').classList.add('hidden');
-            showToast('Инвентарь', 'Предмет добавлен');
+            showToast('ИНВЕНТАРЬ', `Добавлено: ${state.lastWon.name}`);
+            state.lastWon = null;
             updateUI();
         }
 
         function sellAllInventory() {
+            if(state.inventory.length === 0) return showToast('Инвентарь', 'У вас нет предметов для продажи');
             const sum = state.inventory.reduce((a, b) => a + b.price, 0);
             state.balance += sum;
             state.inventory = [];
-            showToast('Распродажа', `Вы получили ${sum.toLocaleString()} ₽`);
+            showToast('Успешная продажа', `Все предметы проданы на сумму ${sum.toLocaleString()} ₽`);
             updateUI();
         }
 
         function freeDeposit() {
-            state.balance += 10000;
-            showToast('Пополнение', '+10,000 ₽ на баланс', 'success');
+            state.balance += 20000;
+            showToast('ПОПОЛНЕНИЕ', '+20,000 ₽ на виртуальный баланс', 'success');
             updateUI();
         }
 
@@ -441,15 +569,25 @@
             document.getElementById('inventory-count').innerText = state.inventory.length;
 
             const roi = state.stats.spent > 0 ? Math.round((state.stats.won / state.stats.spent) * 100) : 0;
-            document.getElementById('stat-roi').innerText = `${roi}%`;
+            const roiEl = document.getElementById('stat-roi');
+            roiEl.innerText = `${roi}%`;
+            if (roi >= 100) {
+                roiEl.className = "font-black text-emerald-400 tabular-nums";
+            } else {
+                roiEl.className = "font-black text-rose-400 tabular-nums";
+            }
 
             const inv = document.getElementById('inventory-container');
-            inv.innerHTML = state.inventory.map(item => `
-                <div class="glass p-2 rounded-xl border-white/5 relative group h-24 flex flex-col items-center justify-center">
-                    <div class="w-8 h-8 text-white/40 mb-1">${SVG_ICONS[item.icon]}</div>
-                    <p class="text-[7px] text-white/60 truncate w-full text-center">${item.name.split('|')[1] || item.name}</p>
-                </div>
-            `).join('');
+            inv.innerHTML = state.inventory.map(item => {
+                const r = RARITY_MAP[item.rarity];
+                return `
+                    <div class="glass p-2 rounded-xl border-white/5 relative group h-24 flex flex-col items-center justify-between overflow-hidden hover:border-${r.class}/30 transition-all">
+                        <div class="w-full flex justify-center">${getItemImageHTML(item, "w-12 h-12")}</div>
+                        <p class="text-[7px] text-white/70 truncate w-full text-center px-1" title="${item.name}">${item.name.split('|')[1] || item.name}</p>
+                        <p class="text-[8px] font-black text-emerald-400">${item.price.toLocaleString()} ₽</p>
+                    </div>
+                `;
+            }).join('');
         }
 
         function showToast(title, msg, type='info') {
