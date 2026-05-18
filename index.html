@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CASE CRAFT - Premium Simulator</title>
+    <title>CASE CRAFT - Auto-Sync Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -30,20 +30,20 @@
         }
 
         /* Неоновые акценты редкостей */
-        .rarity-glow-common { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.2)); }
-        .rarity-glow-rare { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3)); }
-        .rarity-glow-classified { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.4)); }
-        .rarity-glow-covert { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5)); }
-        .rarity-glow-special { filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.6)); }
+        .rarity-glow-common { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.25)); }
+        .rarity-glow-rare { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.35)); }
+        .rarity-glow-classified { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.45)); }
+        .rarity-glow-covert { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.55)); }
+        .rarity-glow-special { filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.65)); }
 
-        /* Граница по редкости */
+        /* Границы по редкости */
         .border-common { border-color: rgba(59, 130, 246, 0.3); }
         .border-rare { border-color: rgba(139, 92, 246, 0.3); }
         .border-classified { border-color: rgba(236, 72, 153, 0.3); }
         .border-covert { border-color: rgba(239, 68, 68, 0.3); }
         .border-special { border-color: rgba(234, 179, 8, 0.3); }
 
-        /* Цвет текста редкости */
+        /* Цвета текста редкости */
         .text-common { color: #60a5fa; }
         .text-rare { color: #c084fc; }
         .text-classified { color: #f472b6; }
@@ -97,8 +97,8 @@
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tighter text-white">CASE<span class="text-amber-500">CRAFT</span></h1>
                     <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Only Verified Skins Active</span>
+                        <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        <span id="sync-status-text" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Синхронизация с GitHub Skins...</span>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex flex-col items-end mr-4">
                     <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Ваш статус</span>
-                    <span class="text-xs font-bold text-amber-400">DEVELOPER MODE</span>
+                    <span class="text-xs font-bold text-amber-400">DEVELOPER AUTO-SYNC</span>
                 </div>
                 <div class="glass px-5 py-2.5 rounded-2xl flex items-center gap-4 border-emerald-500/10">
                     <div class="text-right">
@@ -133,7 +133,15 @@
                     <h2 class="text-sm font-black uppercase tracking-[0.2em] text-slate-400">Доступные коллекции</h2>
                     <div class="h-px flex-grow mx-6 bg-white/5"></div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="case-selector-container"></div>
+                <!-- Загрузочный экран для списка кейсов -->
+                <div id="cases-loading-placeholder" class="py-12 text-center text-slate-500">
+                    <svg class="animate-spin h-8 w-8 text-amber-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Сканирование папки Skins на GitHub...
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 hidden" id="case-selector-container"></div>
             </section>
 
             <!-- Рулетка -->
@@ -143,7 +151,7 @@
                 <div class="flex justify-between items-end mb-8 relative z-10">
                     <div>
                         <p id="active-case-price" class="text-amber-500 font-black text-3xl mb-1">0 ₽</p>
-                        <h3 id="active-case-name" class="text-lg font-bold text-slate-300">Загрузка коллекции...</h3>
+                        <h3 id="active-case-name" class="text-lg font-bold text-slate-300">Ожидание синхронизации...</h3>
                     </div>
                     <div class="flex gap-4">
                         <div class="flex items-center gap-2 glass px-3 py-2 rounded-xl border-white/5">
@@ -171,9 +179,8 @@
                 </div>
 
                 <div class="flex justify-center relative z-10">
-                    <button id="btn-open-case" onclick="openCase()" class="group relative px-16 py-5 bg-white text-black font-black text-lg rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-2xl overflow-hidden">
-                        <span class="relative z-10">ОТКРЫТЬ КЕЙС</span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <button id="btn-open-case" onclick="openCase()" disabled class="group relative px-16 py-5 bg-white/20 text-white/40 cursor-not-allowed font-black text-lg rounded-2xl transition-all overflow-hidden">
+                        <span class="relative z-10" id="btn-open-text">СИНХРОНИЗАЦИЯ...</span>
                     </button>
                 </div>
             </section>
@@ -192,7 +199,6 @@
             <div id="win-card" class="glass rounded-[32px] p-8 hidden relative border-amber-500/30 overflow-hidden animate-gold">
                 <div class="relative z-10 flex flex-col items-center text-center">
                     <div class="w-32 h-32 mb-6 flex items-center justify-center" id="win-item-glow-container">
-                        <!-- Сюда вставляется изображение оружия -->
                         <div id="win-item-icon-wrapper" class="w-full h-full flex items-center justify-center"></div>
                     </div>
                     <h4 id="win-item-name" class="font-black text-xl mb-1">...</h4>
@@ -246,7 +252,8 @@
     <div id="toast-container" class="fixed bottom-10 right-10 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-        // Ссылка на ваш GitHub репозиторий со скинами
+        // Конфигурация GitHub Репозитория
+        const GITHUB_API_URL = "https://api.github.com/repos/Yusikyt2/CashSum/contents/Skins";
         const GITHUB_SKINS_URL = "https://raw.githubusercontent.com/Yusikyt2/CashSum/main/Skins/";
 
         const RARITY_MAP = {
@@ -257,41 +264,145 @@
             'special': { name: 'Extra Rare', class: 'special', soundFreq: 750 }
         };
 
-        // БАЗА ДАННЫХ: ОСТАВИЛИ ТОЛЬКО ВАШ ПОДТВЕРЖДЕННЫЙ И РАБОЧИЙ СКИН С GITHUB!
-        // Вы можете добавлять сюда новые скины ПОСЛЕ того, как загрузите картинку с таким же названием на GitHub
-        const SKINS = {
-            awp_printstream: { 
-                name: 'AWP | Printstream', 
-                rarity: 'covert', 
-                price: 18500, 
-                file: 'AWP Printstream.png' 
-            }
-        };
-
-        // КЕЙСЫ: Теперь содержат только РЕАЛЬНО ЗАГРУЖЕННЫЕ скины.
-        // Больше никаких пустых ячеек и бесконечной загрузки!
-        const CASES = [
-            { 
-                id: 'printstream_case', 
-                name: 'Printstream Spec', 
-                price: 2500, 
-                color: 'from-slate-400', 
-                items: ['awp_printstream'], 
-                probs: { 'common': 0, 'rare': 0, 'classified': 0, 'covert': 1.0, 'special': 0 } 
-            }
-        ];
+        // Базы данных генерируются автоматически после сканирования GitHub
+        let SKINS = {};
+        let CASES = [];
 
         let state = {
-            balance: 25000,
+            balance: 50000,
             inventory: [],
             stats: { opened: 0, spent: 0, won: 0 },
-            activeCaseId: 'printstream_case',
+            activeCaseId: '',
             isSpinning: false,
             lastWon: null
         };
 
         let audioCtx = null;
-        const preloadedImages = {}; // Кэш предзагруженных картинок для идеальной прокрутки без лагов
+        const preloadedImages = {}; 
+
+        // 1. Автоматический опрос GitHub папки Skins при загрузке страницы
+        async function fetchSkinsFromGithub() {
+            try {
+                const response = await fetch(GITHUB_API_URL);
+                if (!response.ok) throw new Error('Не удалось загрузить файлы репозитория');
+                const files = await response.ok ? await response.json() : [];
+
+                // Фильтруем только png/jpg/jpeg/webp файлы
+                const imageFiles = files.filter(f => /\.(png|jpe?g|webp)$/i.test(f.name));
+
+                if (imageFiles.length === 0) {
+                    showToast('Внимание', 'В папке Skins не найдено подходящих изображений оружия!', 'error');
+                    setSyncErrorStatus();
+                    return;
+                }
+
+                // Строим базу SKINS динамически
+                SKINS = {};
+                imageFiles.forEach((file, index) => {
+                    const cleanName = file.name.replace(/\.[^/.]+$/, ""); // Убираем .png
+                    const formattedName = cleanName.replace(/[-_]/g, ' '); // Меняем дефисы на пробелы
+
+                    // Вычисляем реалистичную цену на основе имени скина
+                    let price = 500;
+                    let rarity = 'rare';
+
+                    if (/Printstream/i.test(formattedName)) {
+                        price = 18500;
+                        rarity = 'covert';
+                    } else if (/Asiimov/i.test(formattedName)) {
+                        price = 12000;
+                        rarity = 'covert';
+                    } else if (/Fade|Doppler|LORE|Knife|★/i.test(formattedName)) {
+                        price = 125000;
+                        rarity = 'special';
+                    } else if (/Hyper|Neo/i.test(formattedName)) {
+                        price = 3500;
+                        rarity = 'classified';
+                    } else if (/Sand/i.test(formattedName)) {
+                        price = 25;
+                        rarity = 'common';
+                    } else {
+                        // Случайная цена в зависимости от индекса для остальных
+                        price = Math.floor(Math.sin(index) * 2000) + 2500;
+                        if (price < 100) price = 150;
+                        rarity = price > 4000 ? 'covert' : (price > 2000 ? 'classified' : 'rare');
+                    }
+
+                    const skinKey = 'skin_' + index;
+                    SKINS[skinKey] = {
+                        name: formattedName,
+                        rarity: rarity,
+                        price: price,
+                        file: file.name
+                    };
+                });
+
+                // Генерация автоматических коллекций кейсов из полученных скинов!
+                buildDynamicCases();
+                
+                // Предзагрузка всех картинок в кэш браузера
+                preloadSkinsImages();
+
+                // Обновление статуса
+                document.getElementById('sync-status-dot').className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+                document.getElementById('sync-status-text').innerText = `Синхронизировано скинов: ${imageFiles.length}`;
+                
+                // Скрываем плейсхолдер загрузки
+                document.getElementById('cases-loading-placeholder').classList.add('hidden');
+                document.getElementById('case-selector-container').classList.remove('hidden');
+
+                // Активация кнопки открытия
+                const btnOpen = document.getElementById('btn-open-case');
+                btnOpen.disabled = false;
+                btnOpen.className = "group relative px-16 py-5 bg-white text-black font-black text-lg rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-2xl overflow-hidden";
+                document.getElementById('btn-open-text').innerText = "ОТКРЫТЬ КЕЙС";
+
+                // Рендерим и выбираем первый кейс
+                renderCases();
+                selectCase(CASES[0].id);
+
+            } catch (error) {
+                console.error(error);
+                showToast('Ошибка API GitHub', 'Проверьте доступность репозитория', 'error');
+                setSyncErrorStatus();
+            }
+        }
+
+        // Построение кейсов
+        function buildDynamicCases() {
+            const allKeys = Object.keys(SKINS);
+            
+            // Кейс 1: Все найденные скины
+            CASES = [
+                {
+                    id: 'all_skins',
+                    name: 'Все Скины Репозитория',
+                    price: 1500,
+                    color: 'from-blue-600',
+                    items: allKeys,
+                    probs: { 'common': 0.15, 'rare': 0.40, 'classified': 0.30, 'covert': 0.12, 'special': 0.03 }
+                }
+            ];
+
+            // Если скинов больше 2, создаем дополнительный Люкс кейс
+            const premiumItems = allKeys.filter(k => SKINS[k].price > 2000);
+            if (premiumItems.length > 0) {
+                CASES.push({
+                    id: 'premium_case',
+                    name: 'Элитный Дроп',
+                    price: 7500,
+                    color: 'from-amber-500',
+                    items: premiumItems,
+                    probs: { 'common': 0, 'rare': 0, 'classified': 0.30, 'covert': 0.50, 'special': 0.20 }
+                });
+            }
+        }
+
+        function setSyncErrorStatus() {
+            document.getElementById('sync-status-dot').className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+            document.getElementById('sync-status-text').innerText = "Ошибка синхронизации. Проверьте репозиторий.";
+            document.getElementById('cases-loading-placeholder').innerText = "Не удалось автоматически считать скины. Пожалуйста, убедитесь, что файлы .png загружены в папку Skins.";
+        }
 
         // Фоновый предзагрузчик всех картинок
         function preloadSkinsImages() {
@@ -324,10 +435,9 @@
             }
         }
 
-        // Генерация тега изображения с мгновенной отрисовкой из кэша (БЕЗ ЛАГОВ)
+        // Генерация изображения с мгновенной отрисовкой из кэша
         function getItemImageHTML(item, sizeClass = "w-14 h-14") {
             const imageUrl = GITHUB_SKINS_URL + encodeURIComponent(item.file);
-            // Если картинка уже в кэше браузера, мы загружаем её мгновенно без эффекта мерцания
             const isCached = preloadedImages[item.file] ? "" : "opacity-0";
             return `
                 <div class="${sizeClass} relative flex items-center justify-center">
@@ -410,7 +520,6 @@
 
             let winningItem = null;
             
-            // Быстрый рендеринг без повторных обращений к сети (все берется из памяти)
             const fragment = document.createDocumentFragment();
             for(let i=0; i<totalItems; i++) {
                 const roll = rollItem(c);
@@ -433,7 +542,6 @@
             const offset = (winIdx * step) + (128/2) - (document.getElementById('carousel-viewport').offsetWidth / 2);
             const randomInner = (Math.random() * 80) - 40;
 
-            // Оптимальная анимация через translate3d
             setTimeout(() => {
                 track.style.transition = isFast ? 'transform 1.2s cubic-bezier(0.1, 0.8, 0.1, 1)' : 'transform 5s cubic-bezier(0.1, 0.8, 0.1, 1)';
                 track.style.transform = `translate3d(-${offset + randomInner}px, 0, 0)`;
@@ -455,6 +563,7 @@
         function rollItem(c) {
             const r = Math.random();
             let acc = 0;
+            // Проверяем шансы редкости
             for (const [key, val] of Object.entries(c.probs)) {
                 acc += val;
                 if (r <= acc) {
@@ -517,8 +626,8 @@
         }
 
         function freeDeposit() {
-            state.balance += 20000;
-            showToast('ПОПОЛНЕНИЕ', '+20,000 ₽ на виртуальный баланс', 'success');
+            state.balance += 50000;
+            showToast('ПОПОЛНЕНИЕ', '+50,000 ₽ на виртуальный баланс', 'success');
             updateUI();
         }
 
@@ -562,9 +671,7 @@
         }
 
         window.onload = () => {
-            preloadSkinsImages(); // Кэшируем картинки сразу при старте
-            renderCases();
-            selectCase('printstream_case');
+            fetchSkinsFromGithub(); // Делаем запрос к API GitHub и строим базу данных автоматически!
             updateUI();
         };
     </script>
