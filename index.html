@@ -29,11 +29,11 @@
         }
 
         /* Неоновые акценты редкостей */
-        .rarity-glow-common { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.25)); }
-        .rarity-glow-rare { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.35)); }
-        .rarity-glow-classified { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.45)); }
-        .rarity-glow-covert { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.55)); }
-        .rarity-glow-special { filter: drop-shadow(0 0 20px rgba(234, 179, 8, 0.65)); }
+        .rarity-glow-common { filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.3)); }
+        .rarity-glow-rare { filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.4)); }
+        .rarity-glow-classified { filter: drop-shadow(0 0 18px rgba(236, 72, 153, 0.5)); }
+        .rarity-glow-covert { filter: drop-shadow(0 0 22px rgba(239, 68, 68, 0.6)); }
+        .rarity-glow-special { filter: drop-shadow(0 0 28px rgba(234, 179, 8, 0.7)); }
 
         /* Граница по редкости */
         .border-common { border-color: rgba(59, 130, 246, 0.4); }
@@ -48,6 +48,13 @@
         .text-classified { color: #f472b6; }
         .text-covert { color: #f87171; }
         .text-special { color: #facc15; }
+
+        /* Фоновые классы редкости */
+        .bg-common { background: rgba(59, 130, 246, 0.1); }
+        .bg-rare { background: rgba(139, 92, 246, 0.1); }
+        .bg-classified { background: rgba(236, 72, 153, 0.1); }
+        .bg-covert { background: rgba(239, 68, 68, 0.1); }
+        .bg-special { background: rgba(234, 179, 8, 0.15); }
 
         /* Карусель */
         .carousel-track {
@@ -89,7 +96,7 @@
                     <h1 class="text-2xl font-extrabold tracking-tighter text-white">CASE<span class="text-amber-500">CRAFT</span></h1>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Premium Github-Linked Edition</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Only GitHub Skins Active</span>
                     </div>
                 </div>
             </div>
@@ -240,15 +247,6 @@
         // Конфигурационный URL вашей папки Skins на GitHub
         const GITHUB_SKINS_URL = "https://raw.githubusercontent.com/Yusikyt2/CashSum/main/Skins/";
 
-        // Иконки SVG на случай, если картинки ещё не загружены в GitHub
-        const SVG_ICONS = {
-            rifle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M4 11h14l3-3H4v3zm0 0v4m0-4h-2m2 4h4m10-4v4m2-4v2m-6-2v2" /></svg>`,
-            sniper: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M3 13h15l3-2V9H3v4zm3-4V7m4 2V7m4 2V7m-1 6v3m-5-3v3m10-3h1" /></svg>`,
-            knife: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M18 6L6 18M9 5l10 10m-8-7l5 5M4 20l2-2" /></svg>`,
-            pistol: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M8 8h10v4h-4v6h-4v-4H8V8z" /></svg>`,
-            gloves: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-full h-full"><path d="M12 4a3 3 0 00-3 3v7a3 3 0 006 0V7a3 3 0 00-3-3zM8 9h8m-8 3h8" /></svg>`
-        };
-
         const RARITY_MAP = {
             'common': { name: 'Армейское', class: 'common', soundFreq: 150 },
             'rare': { name: 'Запрещенное', class: 'rare', soundFreq: 250 },
@@ -260,34 +258,34 @@
         // База скинов (с именами файлов, которые вы загрузите в Skins/)
         const SKINS = {
             // Классические базовые скины
-            p250_sand: { name: 'P250 | Sand Dunes', rarity: 'common', price: 15, icon: 'pistol', file: 'P250 Sand Dunes.png' },
-            glock_bor: { name: 'Glock-18 | High Beam', rarity: 'common', price: 35, icon: 'pistol', file: 'Glock-18 High Beam.png' },
-            nova_sand: { name: 'Nova | Sand Dunes', rarity: 'common', price: 12, icon: 'rifle', file: 'Nova Sand Dunes.png' },
+            p250_sand: { name: 'P250 | Sand Dunes', rarity: 'common', price: 15, file: 'P250 Sand Dunes.png' },
+            glock_bor: { name: 'Glock-18 | High Beam', rarity: 'common', price: 35, file: 'Glock-18 High Beam.png' },
+            nova_sand: { name: 'Nova | Sand Dunes', rarity: 'common', price: 12, file: 'Nova Sand Dunes.png' },
             
             // Запрещенное
-            ak_elite: { name: 'AK-47 | Elite Build', rarity: 'rare', price: 350, icon: 'rifle', file: 'AK-47 Elite Build.png' },
-            famas_mecha: { name: 'FAMAS | Mecha Industries', rarity: 'rare', price: 280, icon: 'rifle', file: 'FAMAS Mecha Industries.png' },
+            ak_elite: { name: 'AK-47 | Elite Build', rarity: 'rare', price: 350, file: 'AK-47 Elite Build.png' },
+            famas_mecha: { name: 'FAMAS | Mecha Industries', rarity: 'rare', price: 280, file: 'FAMAS Mecha Industries.png' },
             
             // Засекреченное
-            m4a1_hyper: { name: 'M4A1-S | Hyper Beast', rarity: 'classified', price: 2100, icon: 'rifle', file: 'M4A1-S Hyper Beast.png' },
-            usp_neo: { name: 'USP-S | Neo-Noir', rarity: 'classified', price: 1650, icon: 'pistol', file: 'USP-S Neo-Noir.png' },
+            m4a1_hyper: { name: 'M4A1-S | Hyper Beast', rarity: 'classified', price: 2100, file: 'M4A1-S Hyper Beast.png' },
+            usp_neo: { name: 'USP-S | Neo-Noir', rarity: 'classified', price: 1650, file: 'USP-S Neo-Noir.png' },
             
             // Тайное
-            ak_vulcan: { name: 'AK-47 | Vulcan', rarity: 'covert', price: 25000, icon: 'rifle', file: 'AK-47 Vulcan.png' },
-            awp_asiimov: { name: 'AWP | Asiimov', rarity: 'covert', price: 19000, icon: 'sniper', file: 'AWP Asiimov.png' },
-            m4a4_asiimov: { name: 'M4A4 | Asiimov', rarity: 'covert', price: 15500, icon: 'rifle', file: 'M4A4 Asiimov.png' },
-            p250_asiimov: { name: 'P250 | Asiimov', rarity: 'classified', price: 1200, icon: 'pistol', file: 'P250 Asiimov.png' },
+            ak_vulcan: { name: 'AK-47 | Vulcan', rarity: 'covert', price: 25000, file: 'AK-47 Vulcan.png' },
+            awp_asiimov: { name: 'AWP | Asiimov', rarity: 'covert', price: 19000, file: 'AWP Asiimov.png' },
+            m4a4_asiimov: { name: 'M4A4 | Asiimov', rarity: 'covert', price: 15500, file: 'M4A4 Asiimov.png' },
+            p250_asiimov: { name: 'P250 | Asiimov', rarity: 'classified', price: 1200, file: 'P250 Asiimov.png' },
 
             // Коллекция PRINTSTREAM
-            awp_printstream: { name: 'AWP | Printstream', rarity: 'covert', price: 18500, icon: 'sniper', file: 'AWP Printstream.png' },
-            deagle_printstream: { name: 'Desert Eagle | Printstream', rarity: 'classified', price: 6200, icon: 'pistol', file: 'Desert Eagle Printstream.png' },
-            m4a1_printstream: { name: 'M4A1-S | Printstream', rarity: 'covert', price: 14000, icon: 'rifle', file: 'M4A1-S Printstream.png' },
-            ak_printstream: { name: 'AK-47 | Printstream', rarity: 'covert', price: 16500, icon: 'rifle', file: 'AK-47 Printstream.png' },
+            awp_printstream: { name: 'AWP | Printstream', rarity: 'covert', price: 18500, file: 'AWP Printstream.png' },
+            deagle_printstream: { name: 'Desert Eagle | Printstream', rarity: 'classified', price: 6200, file: 'Desert Eagle Printstream.png' },
+            m4a1_printstream: { name: 'M4A1-S | Printstream', rarity: 'covert', price: 14000, file: 'M4A1-S Printstream.png' },
+            ak_printstream: { name: 'AK-47 | Printstream', rarity: 'covert', price: 16500, file: 'AK-47 Printstream.png' },
 
             // Экстра редкое (Ножи)
-            knife_karambit: { name: '★ Karambit | Fade', rarity: 'special', price: 145000, icon: 'knife', file: 'Karambit Fade.png' },
-            knife_butterfly: { name: '★ Butterfly | Doppler', rarity: 'special', price: 185000, icon: 'knife', file: 'Butterfly Doppler.png' },
-            gloves_vice: { name: '★ Gloves | Vice', rarity: 'special', price: 210000, icon: 'gloves', file: 'Gloves Vice.png' }
+            knife_karambit: { name: '★ Karambit | Fade', rarity: 'special', price: 145000, file: 'Karambit Fade.png' },
+            knife_butterfly: { name: '★ Butterfly | Doppler', rarity: 'special', price: 185000, file: 'Butterfly Doppler.png' },
+            gloves_vice: { name: '★ Gloves | Vice', rarity: 'special', price: 210000, file: 'Gloves Vice.png' }
         };
 
         // 5 уникальных кейсов под разные типы игры
@@ -364,23 +362,23 @@
             }
         }
 
-        // Рендеринг HTML с картинкой из Github с авто-фоллбеком на векторные SVG
+        // Рендеринг HTML с картинкой из Github с элегантным лоадером ожидания
         function getItemImageHTML(item, sizeClass = "w-14 h-14") {
-            const fallbackSVG = SVG_ICONS[item.icon] || SVG_ICONS.rifle;
-            if (item.file) {
-                const imageUrl = GITHUB_SKINS_URL + encodeURIComponent(item.file);
-                return `
-                    <div class="${sizeClass} relative flex items-center justify-center">
-                        <img src="${imageUrl}" alt="${item.name}" class="max-w-full max-h-full object-contain z-10 transition-transform duration-300" 
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                        <div class="absolute inset-0 flex items-center justify-center text-slate-400" style="display: none;">
-                            ${fallbackSVG}
-                        </div>
+            const imageUrl = GITHUB_SKINS_URL + encodeURIComponent(item.file);
+            return `
+                <div class="${sizeClass} relative flex items-center justify-center">
+                    <!-- Загрузочный индикатор -->
+                    <div class="absolute inset-0 flex items-center justify-center spinner-element">
+                        <svg class="animate-spin h-5 w-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                     </div>
-                `;
-            } else {
-                return `<div class="${sizeClass} text-white">${fallbackSVG}</div>`;
-            }
+                    <img src="${imageUrl}" alt="${item.name}" 
+                         class="max-w-full max-h-full object-contain z-10 transition-transform duration-300 opacity-0" 
+                         onload="this.classList.remove('opacity-0'); this.previousElementSibling.remove();" />
+                </div>
+            `;
         }
 
         function renderCases() {
