@@ -18,6 +18,7 @@
             background: radial-gradient(circle at 50% 0%, #161a2e 0%, #030508 100%);
             color: #f8fafc;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Эффект стекла */
@@ -29,18 +30,18 @@
         }
 
         /* Неоновые акценты редкостей */
-        .rarity-glow-common { filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.3)); }
-        .rarity-glow-rare { filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.4)); }
-        .rarity-glow-classified { filter: drop-shadow(0 0 18px rgba(236, 72, 153, 0.5)); }
-        .rarity-glow-covert { filter: drop-shadow(0 0 22px rgba(239, 68, 68, 0.6)); }
-        .rarity-glow-special { filter: drop-shadow(0 0 28px rgba(234, 179, 8, 0.7)); }
+        .rarity-glow-common { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.2)); }
+        .rarity-glow-rare { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3)); }
+        .rarity-glow-classified { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.4)); }
+        .rarity-glow-covert { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5)); }
+        .rarity-glow-special { filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.6)); }
 
         /* Граница по редкости */
-        .border-common { border-color: rgba(59, 130, 246, 0.4); }
-        .border-rare { border-color: rgba(139, 92, 246, 0.4); }
-        .border-classified { border-color: rgba(236, 72, 153, 0.4); }
-        .border-covert { border-color: rgba(239, 68, 68, 0.4); }
-        .border-special { border-color: rgba(234, 179, 8, 0.4); }
+        .border-common { border-color: rgba(59, 130, 246, 0.3); }
+        .border-rare { border-color: rgba(139, 92, 246, 0.3); }
+        .border-classified { border-color: rgba(236, 72, 153, 0.3); }
+        .border-covert { border-color: rgba(239, 68, 68, 0.3); }
+        .border-special { border-color: rgba(234, 179, 8, 0.3); }
 
         /* Цвет текста редкости */
         .text-common { color: #60a5fa; }
@@ -50,29 +51,30 @@
         .text-special { color: #facc15; }
 
         /* Фоновые классы редкости */
-        .bg-common { background: rgba(59, 130, 246, 0.1); }
-        .bg-rare { background: rgba(139, 92, 246, 0.1); }
-        .bg-classified { background: rgba(236, 72, 153, 0.1); }
-        .bg-covert { background: rgba(239, 68, 68, 0.1); }
-        .bg-special { background: rgba(234, 179, 8, 0.15); }
+        .bg-common { background: rgba(59, 130, 246, 0.05); }
+        .bg-rare { background: rgba(139, 92, 246, 0.05); }
+        .bg-classified { background: rgba(236, 72, 153, 0.05); }
+        .bg-covert { background: rgba(239, 68, 68, 0.05); }
+        .bg-special { background: rgba(234, 179, 8, 0.08); }
 
-        /* Карусель */
+        /* Карусель (Оптимизирована для GPU) */
         .carousel-track {
             display: flex;
-            transition: transform 6s cubic-bezier(0.15, 0.85, 0.1, 1);
+            transition: transform 5s cubic-bezier(0.1, 0.8, 0.1, 1);
             will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
 
         .visor-glow {
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.5);
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.6);
         }
 
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 5px rgba(234, 179, 8, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.4); }
             100% { box-shadow: 0 0 5px rgba(234, 179, 8, 0.2); }
         }
-        .animate-gold { animation: pulse-gold 2.5s infinite; }
+        .animate-gold { animation: pulse-gold 2s infinite; }
 
         /* Кастомный скроллбар */
         .custom-scroll::-webkit-scrollbar { width: 5px; }
@@ -84,7 +86,7 @@
 <body class="flex flex-col">
 
     <!-- Хедер -->
-    <header class="z-50 px-6 py-5 border-b border-white/5 bg-black/30 backdrop-blur-md sticky top-0">
+    <header class="z-50 px-6 py-5 border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 glass rounded-2xl flex items-center justify-center border-amber-500/20">
@@ -96,7 +98,7 @@
                     <h1 class="text-2xl font-extrabold tracking-tighter text-white">CASE<span class="text-amber-500">CRAFT</span></h1>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Only GitHub Skins Active</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Only Verified Skins Active</span>
                     </div>
                 </div>
             </div>
@@ -131,7 +133,7 @@
                     <h2 class="text-sm font-black uppercase tracking-[0.2em] text-slate-400">Доступные коллекции</h2>
                     <div class="h-px flex-grow mx-6 bg-white/5"></div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4" id="case-selector-container"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="case-selector-container"></div>
             </section>
 
             <!-- Рулетка -->
@@ -179,7 +181,7 @@
             <!-- Содержимое коллекции -->
             <section>
                 <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Предметы в коллекции</h3>
-                <div id="case-items-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+                <div id="case-items-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
             </section>
         </div>
 
@@ -244,7 +246,7 @@
     <div id="toast-container" class="fixed bottom-10 right-10 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-        // Конфигурационный URL вашей папки Skins на GitHub
+        // Ссылка на ваш GitHub репозиторий со скинами
         const GITHUB_SKINS_URL = "https://raw.githubusercontent.com/Yusikyt2/CashSum/main/Skins/";
 
         const RARITY_MAP = {
@@ -255,80 +257,27 @@
             'special': { name: 'Extra Rare', class: 'special', soundFreq: 750 }
         };
 
-        // База скинов (с именами файлов, которые вы загрузите в Skins/)
+        // БАЗА ДАННЫХ: ОСТАВИЛИ ТОЛЬКО ВАШ ПОДТВЕРЖДЕННЫЙ И РАБОЧИЙ СКИН С GITHUB!
+        // Вы можете добавлять сюда новые скины ПОСЛЕ того, как загрузите картинку с таким же названием на GitHub
         const SKINS = {
-            // Классические базовые скины
-            p250_sand: { name: 'P250 | Sand Dunes', rarity: 'common', price: 15, file: 'P250 Sand Dunes.png' },
-            glock_bor: { name: 'Glock-18 | High Beam', rarity: 'common', price: 35, file: 'Glock-18 High Beam.png' },
-            nova_sand: { name: 'Nova | Sand Dunes', rarity: 'common', price: 12, file: 'Nova Sand Dunes.png' },
-            
-            // Запрещенное
-            ak_elite: { name: 'AK-47 | Elite Build', rarity: 'rare', price: 350, file: 'AK-47 Elite Build.png' },
-            famas_mecha: { name: 'FAMAS | Mecha Industries', rarity: 'rare', price: 280, file: 'FAMAS Mecha Industries.png' },
-            
-            // Засекреченное
-            m4a1_hyper: { name: 'M4A1-S | Hyper Beast', rarity: 'classified', price: 2100, file: 'M4A1-S Hyper Beast.png' },
-            usp_neo: { name: 'USP-S | Neo-Noir', rarity: 'classified', price: 1650, file: 'USP-S Neo-Noir.png' },
-            
-            // Тайное
-            ak_vulcan: { name: 'AK-47 | Vulcan', rarity: 'covert', price: 25000, file: 'AK-47 Vulcan.png' },
-            awp_asiimov: { name: 'AWP | Asiimov', rarity: 'covert', price: 19000, file: 'AWP Asiimov.png' },
-            m4a4_asiimov: { name: 'M4A4 | Asiimov', rarity: 'covert', price: 15500, file: 'M4A4 Asiimov.png' },
-            p250_asiimov: { name: 'P250 | Asiimov', rarity: 'classified', price: 1200, file: 'P250 Asiimov.png' },
-
-            // Коллекция PRINTSTREAM
-            awp_printstream: { name: 'AWP | Printstream', rarity: 'covert', price: 18500, file: 'AWP Printstream.png' },
-            deagle_printstream: { name: 'Desert Eagle | Printstream', rarity: 'classified', price: 6200, file: 'Desert Eagle Printstream.png' },
-            m4a1_printstream: { name: 'M4A1-S | Printstream', rarity: 'covert', price: 14000, file: 'M4A1-S Printstream.png' },
-            ak_printstream: { name: 'AK-47 | Printstream', rarity: 'covert', price: 16500, file: 'AK-47 Printstream.png' },
-
-            // Экстра редкое (Ножи)
-            knife_karambit: { name: '★ Karambit | Fade', rarity: 'special', price: 145000, file: 'Karambit Fade.png' },
-            knife_butterfly: { name: '★ Butterfly | Doppler', rarity: 'special', price: 185000, file: 'Butterfly Doppler.png' },
-            gloves_vice: { name: '★ Gloves | Vice', rarity: 'special', price: 210000, file: 'Gloves Vice.png' }
+            awp_printstream: { 
+                name: 'AWP | Printstream', 
+                rarity: 'covert', 
+                price: 18500, 
+                file: 'AWP Printstream.png' 
+            }
         };
 
-        // 5 уникальных кейсов под разные типы игры
+        // КЕЙСЫ: Теперь содержат только РЕАЛЬНО ЗАГРУЖЕННЫЕ скины.
+        // Больше никаких пустых ячеек и бесконечной загрузки!
         const CASES = [
-            { 
-                id: 'classic', 
-                name: 'Starter Box', 
-                price: 150, 
-                color: 'from-blue-600', 
-                items: ['p250_sand', 'glock_bor', 'nova_sand', 'ak_elite', 'famas_mecha'], 
-                probs: { 'common': 0.75, 'rare': 0.22, 'classified': 0.03, 'covert': 0, 'special': 0 } 
-            },
             { 
                 id: 'printstream_case', 
                 name: 'Printstream Spec', 
                 price: 2500, 
                 color: 'from-slate-400', 
-                items: ['deagle_printstream', 'm4a1_printstream', 'ak_printstream', 'awp_printstream'], 
-                probs: { 'common': 0, 'rare': 0, 'classified': 0.60, 'covert': 0.38, 'special': 0.02 } 
-            },
-            { 
-                id: 'asiimov_case', 
-                name: 'Asiimov Corp', 
-                price: 3500, 
-                color: 'from-orange-500', 
-                items: ['p250_asiimov', 'm4a4_asiimov', 'awp_asiimov'], 
-                probs: { 'common': 0, 'rare': 0, 'classified': 0.50, 'covert': 0.48, 'special': 0.02 } 
-            },
-            { 
-                id: 'elite', 
-                name: 'Elite Ops', 
-                price: 8000, 
-                color: 'from-pink-600', 
-                items: ['ak_elite', 'm4a1_hyper', 'usp_neo', 'ak_vulcan', 'awp_asiimov'], 
-                probs: { 'common': 0, 'rare': 0.40, 'classified': 0.35, 'covert': 0.22, 'special': 0.03 } 
-            },
-            { 
-                id: 'legend', 
-                name: 'Absolute Legend', 
-                price: 60000, 
-                color: 'from-amber-500', 
-                items: ['awp_printstream', 'awp_asiimov', 'knife_karambit', 'knife_butterfly', 'gloves_vice'], 
-                probs: { 'common': 0, 'rare': 0, 'classified': 0, 'covert': 0.30, 'special': 0.70 } 
+                items: ['awp_printstream'], 
+                probs: { 'common': 0, 'rare': 0, 'classified': 0, 'covert': 1.0, 'special': 0 } 
             }
         ];
 
@@ -336,14 +285,27 @@
             balance: 25000,
             inventory: [],
             stats: { opened: 0, spent: 0, won: 0 },
-            activeCaseId: 'classic',
+            activeCaseId: 'printstream_case',
             isSpinning: false,
             lastWon: null
         };
 
         let audioCtx = null;
+        const preloadedImages = {}; // Кэш предзагруженных картинок для идеальной прокрутки без лагов
 
-        // Воспроизведение звуков с помощью Web Audio API
+        // Фоновый предзагрузчик всех картинок
+        function preloadSkinsImages() {
+            Object.values(SKINS).forEach(skin => {
+                const url = GITHUB_SKINS_URL + encodeURIComponent(skin.file);
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    preloadedImages[skin.file] = img;
+                };
+            });
+        }
+
+        // Синтезатор звука на Web Audio API
         function playSound(freq, duration = 0.08, type = 'sine', volume = 0.05) {
             try {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -362,21 +324,16 @@
             }
         }
 
-        // Рендеринг HTML с картинкой из Github с элегантным лоадером ожидания
+        // Генерация тега изображения с мгновенной отрисовкой из кэша (БЕЗ ЛАГОВ)
         function getItemImageHTML(item, sizeClass = "w-14 h-14") {
             const imageUrl = GITHUB_SKINS_URL + encodeURIComponent(item.file);
+            // Если картинка уже в кэше браузера, мы загружаем её мгновенно без эффекта мерцания
+            const isCached = preloadedImages[item.file] ? "" : "opacity-0";
             return `
                 <div class="${sizeClass} relative flex items-center justify-center">
-                    <!-- Загрузочный индикатор -->
-                    <div class="absolute inset-0 flex items-center justify-center spinner-element">
-                        <svg class="animate-spin h-5 w-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                    </div>
                     <img src="${imageUrl}" alt="${item.name}" 
-                         class="max-w-full max-h-full object-contain z-10 transition-transform duration-300 opacity-0" 
-                         onload="this.classList.remove('opacity-0'); this.previousElementSibling.remove();" />
+                         class="max-w-full max-h-full object-contain z-10 transition-transform duration-150 ${isCached}" 
+                         onload="this.classList.remove('opacity-0');" />
                 </div>
             `;
         }
@@ -426,7 +383,7 @@
         function resetCarousel() {
             const track = document.getElementById('carousel-track');
             track.style.transition = 'none';
-            track.style.transform = 'translateX(0)';
+            track.style.transform = 'translate3d(0,0,0)';
             track.innerHTML = `<div class="w-full flex items-center justify-center py-16 text-slate-600 font-medium tracking-wide italic">ГОТОВ К ОТКРЫТИЮ...</div>`;
         }
 
@@ -452,6 +409,9 @@
             track.innerHTML = '';
 
             let winningItem = null;
+            
+            // Быстрый рендеринг без повторных обращений к сети (все берется из памяти)
+            const fragment = document.createDocumentFragment();
             for(let i=0; i<totalItems; i++) {
                 const roll = rollItem(c);
                 if(i === winIdx) winningItem = roll;
@@ -464,28 +424,32 @@
                     <div class="w-16 h-16 flex items-center justify-center">${getItemImageHTML(roll, "w-16 h-16")}</div>
                     <p class="text-[8px] font-bold text-center text-white truncate w-full">${roll.name.split('|')[1] || roll.name}</p>
                 `;
-                track.appendChild(div);
+                fragment.appendChild(div);
             }
+            track.appendChild(fragment);
 
             state.lastWon = winningItem;
-            const step = 128 + 12; // ширина предмета + зазор в CSS
+            const step = 128 + 12; // 128px ширина элемента + 12px gap
             const offset = (winIdx * step) + (128/2) - (document.getElementById('carousel-viewport').offsetWidth / 2);
             const randomInner = (Math.random() * 80) - 40;
 
+            // Оптимальная анимация через translate3d
             setTimeout(() => {
-                track.style.transition = isFast ? 'transform 1.2s cubic-bezier(0.15, 0.85, 0.1, 1)' : 'transform 6s cubic-bezier(0.15, 0.85, 0.1, 1)';
-                track.style.transform = `translateX(-${offset + randomInner}px)`;
+                track.style.transition = isFast ? 'transform 1.2s cubic-bezier(0.1, 0.8, 0.1, 1)' : 'transform 5s cubic-bezier(0.1, 0.8, 0.1, 1)';
+                track.style.transform = `translate3d(-${offset + randomInner}px, 0, 0)`;
                 
                 if(!isFast) {
                     for(let i=0; i<25; i++) {
-                        setTimeout(() => playSound(140 + i * 5, 0.04, 'sine', 0.06), Math.pow(i/24, 2.2) * 5500);
+                        setTimeout(() => {
+                            if (state.isSpinning) playSound(140 + i * 5, 0.04, 'sine', 0.05);
+                        }, Math.pow(i/24, 2.2) * 4600);
                     }
                 } else {
                     setTimeout(() => playSound(200, 0.1), 300);
                 }
             }, 50);
 
-            setTimeout(finishOpening, isFast ? 1300 : 6100);
+            setTimeout(finishOpening, isFast ? 1300 : 5100);
         }
 
         function rollItem(c) {
@@ -515,7 +479,6 @@
             const winCard = document.getElementById('win-card');
             winCard.classList.remove('hidden');
             
-            // Вставляем изображение с флбеком в окно победы
             document.getElementById('win-item-icon-wrapper').innerHTML = getItemImageHTML(item, "w-28 h-28 rarity-glow-" + item.rarity);
             
             document.getElementById('win-item-name').innerText = item.name;
@@ -599,8 +562,9 @@
         }
 
         window.onload = () => {
+            preloadSkinsImages(); // Кэшируем картинки сразу при старте
             renderCases();
-            selectCase('classic');
+            selectCase('printstream_case');
             updateUI();
         };
     </script>
